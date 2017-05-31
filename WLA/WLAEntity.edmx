@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="wlaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Activities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActivityGroupLists">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Activity_Id" Type="int" Nullable="false" />
+          <Property Name="ActivityGroup_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActivityGroups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ActivityActivityGroupList">
+          <End Role="Activities" Type="Self.Activities" Multiplicity="1" />
+          <End Role="ActivityGroupLists" Type="Self.ActivityGroupLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityGroupLists">
+              <PropertyRef Name="Activity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityGroupActivityGroupList">
+          <End Role="ActivityGroups" Type="Self.ActivityGroups" Multiplicity="1" />
+          <End Role="ActivityGroupLists" Type="Self.ActivityGroupLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityGroups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityGroupLists">
+              <PropertyRef Name="ActivityGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="wlaModelStoreContainer">
+          <EntitySet Name="Activities" EntityType="Self.Activities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityGroupLists" EntityType="Self.ActivityGroupLists" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityGroups" EntityType="Self.ActivityGroups" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ActivityActivityGroupList" Association="Self.FK_ActivityActivityGroupList">
+            <End Role="Activities" EntitySet="Activities" />
+            <End Role="ActivityGroupLists" EntitySet="ActivityGroupLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityGroupActivityGroupList" Association="Self.FK_ActivityGroupActivityGroupList">
+            <End Role="ActivityGroups" EntitySet="ActivityGroups" />
+            <End Role="ActivityGroupLists" EntitySet="ActivityGroupLists" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="wlaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ActivityGroupLists" Relationship="Self.FK_ActivityActivityGroupList" FromRole="Activities" ToRole="ActivityGroupLists" />
+        </EntityType>
+        <EntityType Name="ActivityGroupList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Activity_Id" Type="Int32" Nullable="false" />
+          <Property Name="ActivityGroup_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Activity" Relationship="Self.FK_ActivityActivityGroupList" FromRole="ActivityGroupLists" ToRole="Activities" />
+          <NavigationProperty Name="ActivityGroup" Relationship="Self.FK_ActivityGroupActivityGroupList" FromRole="ActivityGroupLists" ToRole="ActivityGroups" />
+        </EntityType>
+        <EntityType Name="ActivityGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ActivityGroupLists" Relationship="Self.FK_ActivityGroupActivityGroupList" FromRole="ActivityGroups" ToRole="ActivityGroupLists" />
+        </EntityType>
+        <Association Name="FK_ActivityActivityGroupList">
+          <End Role="Activities" Type="Self.Activity" Multiplicity="1" />
+          <End Role="ActivityGroupLists" Type="Self.ActivityGroupList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityGroupLists">
+              <PropertyRef Name="Activity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityGroupActivityGroupList">
+          <End Role="ActivityGroups" Type="Self.ActivityGroup" Multiplicity="1" />
+          <End Role="ActivityGroupLists" Type="Self.ActivityGroupList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityGroups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityGroupLists">
+              <PropertyRef Name="ActivityGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="wlaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Activities" EntityType="Self.Activity" />
+          <EntitySet Name="ActivityGroupLists" EntityType="Self.ActivityGroupList" />
+          <EntitySet Name="ActivityGroups" EntityType="Self.ActivityGroup" />
+          <AssociationSet Name="FK_ActivityActivityGroupList" Association="Self.FK_ActivityActivityGroupList">
+            <End Role="Activities" EntitySet="Activities" />
+            <End Role="ActivityGroupLists" EntitySet="ActivityGroupLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityGroupActivityGroupList" Association="Self.FK_ActivityGroupActivityGroupList">
+            <End Role="ActivityGroups" EntitySet="ActivityGroups" />
+            <End Role="ActivityGroupLists" EntitySet="ActivityGroupLists" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="wlaModelStoreContainer" CdmEntityContainer="wlaEntities">
+          <EntitySetMapping Name="Activities">
+            <EntityTypeMapping TypeName="wlaModel.Activity">
+              <MappingFragment StoreEntitySet="Activities">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityGroupLists">
+            <EntityTypeMapping TypeName="wlaModel.ActivityGroupList">
+              <MappingFragment StoreEntitySet="ActivityGroupLists">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Activity_Id" ColumnName="Activity_Id" />
+                <ScalarProperty Name="ActivityGroup_Id" ColumnName="ActivityGroup_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityGroups">
+            <EntityTypeMapping TypeName="wlaModel.ActivityGroup">
+              <MappingFragment StoreEntitySet="ActivityGroups">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
