@@ -1,0 +1,63 @@
+﻿@model IEnumerable<WLA.WLATrx>
+
+@{
+    ViewBag.Title = "Work Load Analysis";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-danger" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Process_Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Frequency)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sub_Total_Aktivitas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Effective_Working_Hours)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FTE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Presentase)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Process_Time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Frequency)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sub_Total_Aktivitas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Effective_Working_Hours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FTE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Presentase)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

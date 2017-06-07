@@ -174,12 +174,34 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ActivitiesController.cs" />
+    <Compile Include="Controllers\ActivityGroupListsController.cs" />
     <Compile Include="Controllers\ActivityGroupsController.cs" />
+    <Compile Include="Controllers\FungsiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JabatanController.cs" />
+    <Compile Include="Controllers\PelaksanaController.cs" />
+    <Compile Include="Controllers\PeriodeController.cs" />
+    <Compile Include="Controllers\StandardTimeController.cs" />
+    <Compile Include="Controllers\WLATrxController.cs" />
+    <Compile Include="Fungsi.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Jabatan.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Pelaksana.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Periode.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Standard_Time.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="WLAEntity.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -194,6 +216,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WLAEntity.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="WLATrx.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +406,7 @@
       <DependentUpon>WLAEntity.edmx</DependentUpon>
       <LastGenOutput>WLAEntity.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="WLAEntity.edmx.sql" />
     <Content Include="WLAEntity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WLAEntity.edmx</DependentUpon>
@@ -504,6 +530,41 @@
     <Content Include="Views\ActivityGroups\Details.cshtml" />
     <Content Include="Views\ActivityGroups\Edit.cshtml" />
     <Content Include="Views\ActivityGroups\Index.cshtml" />
+    <Content Include="Views\StandardTime\Create.cshtml" />
+    <Content Include="Views\StandardTime\Delete.cshtml" />
+    <Content Include="Views\StandardTime\Details.cshtml" />
+    <Content Include="Views\StandardTime\Edit.cshtml" />
+    <Content Include="Views\StandardTime\Index.cshtml" />
+    <Content Include="Views\ActivityGroupLists\Create.cshtml" />
+    <Content Include="Views\ActivityGroupLists\Delete.cshtml" />
+    <Content Include="Views\ActivityGroupLists\Details.cshtml" />
+    <Content Include="Views\ActivityGroupLists\Edit.cshtml" />
+    <Content Include="Views\ActivityGroupLists\Index.cshtml" />
+    <Content Include="Views\Fungsi\Create.cshtml" />
+    <Content Include="Views\Fungsi\Delete.cshtml" />
+    <Content Include="Views\Fungsi\Details.cshtml" />
+    <Content Include="Views\Fungsi\Edit.cshtml" />
+    <Content Include="Views\Fungsi\Index.cshtml" />
+    <Content Include="Views\Jabatan\Create.cshtml" />
+    <Content Include="Views\Jabatan\Delete.cshtml" />
+    <Content Include="Views\Jabatan\Details.cshtml" />
+    <Content Include="Views\Jabatan\Edit.cshtml" />
+    <Content Include="Views\Jabatan\Index.cshtml" />
+    <Content Include="Views\Pelaksana\Create.cshtml" />
+    <Content Include="Views\Pelaksana\Delete.cshtml" />
+    <Content Include="Views\Pelaksana\Details.cshtml" />
+    <Content Include="Views\Pelaksana\Edit.cshtml" />
+    <Content Include="Views\Pelaksana\Index.cshtml" />
+    <Content Include="Views\Periode\Create.cshtml" />
+    <Content Include="Views\Periode\Delete.cshtml" />
+    <Content Include="Views\Periode\Details.cshtml" />
+    <Content Include="Views\Periode\Edit.cshtml" />
+    <Content Include="Views\Periode\Index.cshtml" />
+    <Content Include="Views\WLATrx\Create.cshtml" />
+    <Content Include="Views\WLATrx\Delete.cshtml" />
+    <Content Include="Views\WLATrx\Details.cshtml" />
+    <Content Include="Views\WLATrx\Edit.cshtml" />
+    <Content Include="Views\WLATrx\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

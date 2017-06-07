@@ -1,131 +1,116 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
-using PagedList;
-using System;
+using WLA;
 
 namespace WLA.Controllers
 {
-    public class ActivityGroupsController : Controller
+    public class JabatanController : Controller
     {
         private wlaEntities db = new wlaEntities();
 
-        // GET: ActivityGroups
-        public ActionResult Index(string currentFilter, string searchString, int? page)
+        // GET: Jabatan
+        public ActionResult Index()
         {
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-            ViewBag.CurrentFilter = searchString;
-            var activityGroups = from s in db.ActivityGroups select s;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                activityGroups = activityGroups.Where(s => s.Name.Contains(searchString));
-            }
-            activityGroups = activityGroups.OrderBy(s => s.Name);
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            return View(activityGroups.ToPagedList(pageNumber, pageSize));
+            return View(db.Jabatan.ToList());
         }
 
-        // GET: ActivityGroups/Details/5
+        // GET: Jabatan/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ActivityGroup activityGroup = db.ActivityGroups.Find(id);
-            if (activityGroup == null)
+            Jabatan jabatan = db.Jabatan.Find(id);
+            if (jabatan == null)
             {
                 return HttpNotFound();
             }
-            return View(activityGroup);
+            return View(jabatan);
         }
 
-        // GET: ActivityGroups/Create
+        // GET: Jabatan/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ActivityGroups/Create
+        // POST: Jabatan/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] ActivityGroup activityGroup)
+        public ActionResult Create([Bind(Include = "Id,Name")] Jabatan jabatan)
         {
             if (ModelState.IsValid)
             {
-                db.ActivityGroups.Add(activityGroup);
+                db.Jabatan.Add(jabatan);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(activityGroup);
+            return View(jabatan);
         }
 
-        // GET: ActivityGroups/Edit/5
+        // GET: Jabatan/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ActivityGroup activityGroup = db.ActivityGroups.Find(id);
-            if (activityGroup == null)
+            Jabatan jabatan = db.Jabatan.Find(id);
+            if (jabatan == null)
             {
                 return HttpNotFound();
             }
-            return View(activityGroup);
+            return View(jabatan);
         }
 
-        // POST: ActivityGroups/Edit/5
+        // POST: Jabatan/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] ActivityGroup activityGroup)
+        public ActionResult Edit([Bind(Include = "Id,Name")] Jabatan jabatan)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(activityGroup).State = EntityState.Modified;
+                db.Entry(jabatan).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(activityGroup);
+            return View(jabatan);
         }
 
-        // GET: ActivityGroups/Delete/5
+        // GET: Jabatan/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ActivityGroup activityGroup = db.ActivityGroups.Find(id);
-            if (activityGroup == null)
+            Jabatan jabatan = db.Jabatan.Find(id);
+            if (jabatan == null)
             {
                 return HttpNotFound();
             }
-            return View(activityGroup);
+            return View(jabatan);
         }
 
-        // POST: ActivityGroups/Delete/5
+        // POST: Jabatan/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ActivityGroup activityGroup = db.ActivityGroups.Find(id);
-            db.ActivityGroups.Remove(activityGroup);
+            Jabatan jabatan = db.Jabatan.Find(id);
+            db.Jabatan.Remove(jabatan);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

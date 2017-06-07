@@ -5,11 +5,21 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="2880410a086445d18846f38329f64f69" Name="Diagram1">
-        <EntityTypeShape EntityType="wlaModel.Activity" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="wlaModel.ActivityGroupList" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="wlaModel.ActivityGroup" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="wlaModel.Activity" Width="1.5" PointX="0.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="wlaModel.ActivityGroupList" Width="1.5" PointX="2.625" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="wlaModel.ActivityGroup" Width="1.5" PointX="2.5" PointY="3.5" IsExpanded="true" />
         <AssociationConnector Association="wlaModel.FK_ActivityActivityGroupList" ManuallyRouted="false" />
         <AssociationConnector Association="wlaModel.FK_ActivityGroupActivityGroupList" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="wlaModel.Fungsi" Width="1.5" PointX="5" PointY="1" />
+        <EntityTypeShape EntityType="wlaModel.Jabatan" Width="1.5" PointX="7.125" PointY="3.75" />
+        <EntityTypeShape EntityType="wlaModel.Pelaksana" Width="1.5" PointX="2.5" PointY="6.5" />
+        <EntityTypeShape EntityType="wlaModel.Periode" Width="1.5" PointX="6.75" PointY="7.125" />
+        <EntityTypeShape EntityType="wlaModel.WLATrx" Width="1.5" PointX="4.75" PointY="3.75" />
+        <AssociationConnector Association="wlaModel.FungsiWLA" />
+        <AssociationConnector Association="wlaModel.JabatanWLA" />
+        <AssociationConnector Association="wlaModel.PelaksanaWLA" />
+        <AssociationConnector Association="wlaModel.PeriodeWLA" />
+        <EntityTypeShape EntityType="wlaModel.Standard_Time" Width="2" PointX="3" PointY="8.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

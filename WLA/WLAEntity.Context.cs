@@ -28,5 +28,11 @@ namespace WLA
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<ActivityGroupList> ActivityGroupLists { get; set; }
         public virtual DbSet<ActivityGroup> ActivityGroups { get; set; }
+        public virtual DbSet<Fungsi> Fungsi { get; set; }
+        public virtual DbSet<Jabatan> Jabatan { get; set; }
+        public virtual DbSet<Pelaksana> Pelaksana { get; set; }
+        public virtual DbSet<Periode> Periode { get; set; }
+        public virtual DbSet<WLATrx> WLATrx { get; set; }
+        public virtual DbSet<Standard_Time> Standard_Time { get; set; }
     }
 }

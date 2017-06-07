@@ -2,18 +2,28 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Activity";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-danger" })
 </p>
+@using (Html.BeginForm("Index", "Activities", FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>
             Name
+        </th>
+        <th>
+            Type
         </th>
         <th></th>
     </tr>
@@ -22,6 +32,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @(item.Type == 1 ? "Terpengaruh Jumlah Unit" : item.Type == 2 ? "Tidak Terpengaruh Jumlah Unit" : "")
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
@@ -35,4 +48,4 @@
 <br/>
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page }))
+    new { page, currentFilter = ViewBag.CurrentFilter }))

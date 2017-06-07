@@ -16,13 +16,25 @@ namespace WLA.Controllers
         private wlaEntities db = new wlaEntities();
 
         // GET: Activities
-        public ActionResult Index(int? page)
+        public ActionResult Index(string currentFilter, string searchString, int? page)
         {
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
             var activities = from s in db.Activities
                            select s;
-
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                activities = activities.Where(s => s.Name.Contains(searchString));
+            }
             activities = activities.OrderBy(s => s.Name);
-            int pageSize = 3;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(activities.ToPagedList(pageNumber, pageSize));
         }
@@ -53,7 +65,7 @@ namespace WLA.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Activity activity)
+        public ActionResult Create([Bind(Include = "Id,Name,Type")] Activity activity)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +97,7 @@ namespace WLA.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Activity activity)
+        public ActionResult Edit([Bind(Include = "Id,Name,Type")] Activity activity)
         {
             if (ModelState.IsValid)
             {

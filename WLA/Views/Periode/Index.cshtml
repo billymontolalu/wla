@@ -1,8 +1,7 @@
-﻿@model PagedList.IPagedList<WLA.ActivityGroup>
-@using PagedList.Mvc;
+﻿@model IEnumerable<WLA.Periode>
 
 @{
-    ViewBag.Title = "Activity Group";
+    ViewBag.Title = "Periode";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,17 +9,10 @@
 <p>
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-danger" })
 </p>
-@using (Html.BeginForm("Index", "ActivityGroups", FormMethod.Get))
-{
-    <p>
-        Find by name: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Search" />
-    </p>
-}
 <table class="table">
     <tr>
         <th>
-            Name
+            @Html.DisplayNameFor(model => model.Name)
         </th>
         <th></th>
     </tr>
@@ -39,7 +31,3 @@
 }
 
 </table>
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, currentFilter = ViewBag.CurrentFilter }))

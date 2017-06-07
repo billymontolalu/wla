@@ -1,131 +1,116 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
-using PagedList;
-using System;
+using WLA;
 
 namespace WLA.Controllers
 {
-    public class ActivityGroupsController : Controller
+    public class FungsiController : Controller
     {
         private wlaEntities db = new wlaEntities();
 
-        // GET: ActivityGroups
-        public ActionResult Index(string currentFilter, string searchString, int? page)
+        // GET: Fungsi
+        public ActionResult Index()
         {
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-            ViewBag.CurrentFilter = searchString;
-            var activityGroups = from s in db.ActivityGroups select s;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                activityGroups = activityGroups.Where(s => s.Name.Contains(searchString));
-            }
-            activityGroups = activityGroups.OrderBy(s => s.Name);
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            return View(activityGroups.ToPagedList(pageNumber, pageSize));
+            return View(db.Fungsi.ToList());
         }
 
-        // GET: ActivityGroups/Details/5
+        // GET: Fungsi/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ActivityGroup activityGroup = db.ActivityGroups.Find(id);
-            if (activityGroup == null)
+            Fungsi fungsi = db.Fungsi.Find(id);
+            if (fungsi == null)
             {
                 return HttpNotFound();
             }
-            return View(activityGroup);
+            return View(fungsi);
         }
 
-        // GET: ActivityGroups/Create
+        // GET: Fungsi/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ActivityGroups/Create
+        // POST: Fungsi/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] ActivityGroup activityGroup)
+        public ActionResult Create([Bind(Include = "Id,Name")] Fungsi fungsi)
         {
             if (ModelState.IsValid)
             {
-                db.ActivityGroups.Add(activityGroup);
+                db.Fungsi.Add(fungsi);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(activityGroup);
+            return View(fungsi);
         }
 
-        // GET: ActivityGroups/Edit/5
+        // GET: Fungsi/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ActivityGroup activityGroup = db.ActivityGroups.Find(id);
-            if (activityGroup == null)
+            Fungsi fungsi = db.Fungsi.Find(id);
+            if (fungsi == null)
             {
                 return HttpNotFound();
             }
-            return View(activityGroup);
+            return View(fungsi);
         }
 
-        // POST: ActivityGroups/Edit/5
+        // POST: Fungsi/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] ActivityGroup activityGroup)
+        public ActionResult Edit([Bind(Include = "Id,Name")] Fungsi fungsi)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(activityGroup).State = EntityState.Modified;
+                db.Entry(fungsi).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(activityGroup);
+            return View(fungsi);
         }
 
-        // GET: ActivityGroups/Delete/5
+        // GET: Fungsi/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ActivityGroup activityGroup = db.ActivityGroups.Find(id);
-            if (activityGroup == null)
+            Fungsi fungsi = db.Fungsi.Find(id);
+            if (fungsi == null)
             {
                 return HttpNotFound();
             }
-            return View(activityGroup);
+            return View(fungsi);
         }
 
-        // POST: ActivityGroups/Delete/5
+        // POST: Fungsi/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ActivityGroup activityGroup = db.ActivityGroups.Find(id);
-            db.ActivityGroups.Remove(activityGroup);
+            Fungsi fungsi = db.Fungsi.Find(id);
+            db.Fungsi.Remove(fungsi);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -12,19 +12,18 @@ namespace WLA
     using System;
     using System.Collections.Generic;
     
-    public partial class Activity
+    public partial class Jabatan
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Activity()
+        public Jabatan()
         {
-            this.ActivityGroupLists = new HashSet<ActivityGroupList>();
+            this.WLAs = new HashSet<WLATrx>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Type { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActivityGroupList> ActivityGroupLists { get; set; }
+        public virtual ICollection<WLATrx> WLAs { get; set; }
     }
 }

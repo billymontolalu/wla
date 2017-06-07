@@ -29,8 +29,8 @@ namespace WLA
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/DataTables/css/dataTables.bootstrap4.css"));
+                      "~/Content/DataTables/css/dataTables.bootstrap4.css",
+                      "~/Content/site.css"));
         }
     }
 }

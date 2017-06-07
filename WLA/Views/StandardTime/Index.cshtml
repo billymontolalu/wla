@@ -1,0 +1,99 @@
+﻿@model IEnumerable<WLA.Standard_Time>
+
+@{
+    ViewBag.Title = "Standard Time";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-danger" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Tahun)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Day)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Saturday)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sunday)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Holiday)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Annual_Leaves)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sick_Permission)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Working_Days)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Effective_Working_Days)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Working_Hours)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Utilitation_Level)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Effective_Working_Hours)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tahun)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Day)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Saturday)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sunday)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Holiday)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Annual_Leaves)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sick_Permission)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Working_Days)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Effective_Working_Days)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Working_Hours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Utilitation_Level)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Effective_Working_Hours)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

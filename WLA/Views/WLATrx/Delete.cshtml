@@ -1,0 +1,72 @@
+﻿@model WLA.WLATrx
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>WLATrx</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Process_Time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Process_Time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Frequency)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Frequency)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sub_Total_Aktivitas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sub_Total_Aktivitas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Effective_Working_Hours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Effective_Working_Hours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FTE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FTE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Presentase)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Presentase)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
