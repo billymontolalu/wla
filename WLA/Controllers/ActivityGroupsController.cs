@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Mvc;
 using PagedList;
 using System;
+using WLA.Models;
 
 namespace WLA.Controllers
 {

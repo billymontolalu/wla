@@ -161,13 +161,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activity.cs">
+    <Compile Include="Controllers\WLAHeadersController.cs" />
+    <Compile Include="Models\Activity.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="ActivityGroup.cs">
+    <Compile Include="Models\ActivityGroup.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="ActivityGroupList.cs">
+    <Compile Include="Models\ActivityGroupList.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -183,41 +184,46 @@
     <Compile Include="Controllers\PeriodeController.cs" />
     <Compile Include="Controllers\StandardTimeController.cs" />
     <Compile Include="Controllers\WLATrxController.cs" />
-    <Compile Include="Fungsi.cs">
+    <Compile Include="Models\Fungsi.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Jabatan.cs">
+    <Compile Include="Models\Groups.cs" />
+    <Compile Include="Models\Helper.cs" />
+    <Compile Include="Models\Jabatan.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="Pelaksana.cs">
+    <Compile Include="Models\Pelaksana.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="Periode.cs">
+    <Compile Include="Models\Periode.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WLAHeader.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Standard_Time.cs">
+    <Compile Include="Models\Standard_Time.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="WLAEntity.Context.cs">
+    <Compile Include="Models\WLAEntity.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WLAEntity.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="WLAEntity.cs">
+    <Compile Include="Models\WLAEntity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="WLAEntity.Designer.cs">
+    <Compile Include="Models\WLAEntity.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WLAEntity.edmx</DependentUpon>
     </Compile>
-    <Compile Include="WLATrx.cs">
+    <Compile Include="Models\WLATrx.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -226,6 +232,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\select2.css" />
+    <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap4.css" />
@@ -401,13 +409,13 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
-    <Content Include="WLAEntity.Context.tt">
+    <Content Include="Models\WLAEntity.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WLAEntity.edmx</DependentUpon>
       <LastGenOutput>WLAEntity.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="WLAEntity.edmx.sql" />
-    <Content Include="WLAEntity.tt">
+    <Content Include="Models\WLAEntity.edmx.sql" />
+    <Content Include="Models\WLAEntity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WLAEntity.edmx</DependentUpon>
       <LastGenOutput>WLAEntity.cs</LastGenOutput>
@@ -489,6 +497,53 @@
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="Scripts\i18n\ar.js" />
+    <Content Include="Scripts\i18n\az.js" />
+    <Content Include="Scripts\i18n\bg.js" />
+    <Content Include="Scripts\i18n\ca.js" />
+    <Content Include="Scripts\i18n\cs.js" />
+    <Content Include="Scripts\i18n\da.js" />
+    <Content Include="Scripts\i18n\de.js" />
+    <Content Include="Scripts\i18n\el.js" />
+    <Content Include="Scripts\i18n\en.js" />
+    <Content Include="Scripts\i18n\es.js" />
+    <Content Include="Scripts\i18n\et.js" />
+    <Content Include="Scripts\i18n\eu.js" />
+    <Content Include="Scripts\i18n\fa.js" />
+    <Content Include="Scripts\i18n\fi.js" />
+    <Content Include="Scripts\i18n\fr.js" />
+    <Content Include="Scripts\i18n\gl.js" />
+    <Content Include="Scripts\i18n\he.js" />
+    <Content Include="Scripts\i18n\hi.js" />
+    <Content Include="Scripts\i18n\hr.js" />
+    <Content Include="Scripts\i18n\hu.js" />
+    <Content Include="Scripts\i18n\id.js" />
+    <Content Include="Scripts\i18n\is.js" />
+    <Content Include="Scripts\i18n\it.js" />
+    <Content Include="Scripts\i18n\ja.js" />
+    <Content Include="Scripts\i18n\km.js" />
+    <Content Include="Scripts\i18n\ko.js" />
+    <Content Include="Scripts\i18n\lt.js" />
+    <Content Include="Scripts\i18n\lv.js" />
+    <Content Include="Scripts\i18n\mk.js" />
+    <Content Include="Scripts\i18n\ms.js" />
+    <Content Include="Scripts\i18n\nb.js" />
+    <Content Include="Scripts\i18n\nl.js" />
+    <Content Include="Scripts\i18n\pl.js" />
+    <Content Include="Scripts\i18n\pt-BR.js" />
+    <Content Include="Scripts\i18n\pt.js" />
+    <Content Include="Scripts\i18n\ro.js" />
+    <Content Include="Scripts\i18n\ru.js" />
+    <Content Include="Scripts\i18n\sk.js" />
+    <Content Include="Scripts\i18n\sr-Cyrl.js" />
+    <Content Include="Scripts\i18n\sr.js" />
+    <Content Include="Scripts\i18n\sv.js" />
+    <Content Include="Scripts\i18n\th.js" />
+    <Content Include="Scripts\i18n\tr.js" />
+    <Content Include="Scripts\i18n\uk.js" />
+    <Content Include="Scripts\i18n\vi.js" />
+    <Content Include="Scripts\i18n\zh-CN.js" />
+    <Content Include="Scripts\i18n\zh-TW.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -499,6 +554,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -513,11 +570,11 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <EntityDeploy Include="WLAEntity.edmx">
+    <EntityDeploy Include="Models\WLAEntity.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>WLAEntity.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="WLAEntity.edmx.diagram">
+    <Content Include="Models\WLAEntity.edmx.diagram">
       <DependentUpon>WLAEntity.edmx</DependentUpon>
     </Content>
     <Content Include="Views\Activities\Create.cshtml" />
@@ -565,10 +622,15 @@
     <Content Include="Views\WLATrx\Details.cshtml" />
     <Content Include="Views\WLATrx\Edit.cshtml" />
     <Content Include="Views\WLATrx\Index.cshtml" />
+    <Content Include="Views\WLAHeaders\Create.cshtml" />
+    <Content Include="Views\WLAHeaders\Delete.cshtml" />
+    <Content Include="Views\WLAHeaders\Details.cshtml" />
+    <Content Include="Views\WLAHeaders\Edit.cshtml" />
+    <Content Include="Views\WLAHeaders\Index.cshtml" />
+    <Content Include="Views\WLAHeaders\Groups.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

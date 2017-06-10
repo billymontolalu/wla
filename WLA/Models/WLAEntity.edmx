@@ -1,0 +1,660 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="wlaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Activities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActivityGroupLists">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Activity_Id" Type="int" Nullable="false" />
+          <Property Name="ActivityGroup_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActivityGroups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Fungsi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Jabatan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pelaksana">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Periode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Standard_Time">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tahun" Type="int" Nullable="false" />
+          <Property Name="Day" Type="int" Nullable="false" />
+          <Property Name="Saturday" Type="int" Nullable="false" />
+          <Property Name="Sunday" Type="int" Nullable="false" />
+          <Property Name="Holiday" Type="int" Nullable="false" />
+          <Property Name="Annual_Leaves" Type="int" Nullable="false" />
+          <Property Name="Sick_Permission" Type="int" Nullable="false" />
+          <Property Name="Working_Days" Type="int" Nullable="false" />
+          <Property Name="Effective_Working_Days" Type="int" Nullable="false" />
+          <Property Name="Working_Hours" Type="int" Nullable="false" />
+          <Property Name="Utilitation_Level" Type="float" Nullable="false" />
+          <Property Name="Effective_Working_Hours" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WLAHeaders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tahun" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FTE" Type="float" Nullable="false" />
+          <Property Name="Fungsi_Id" Type="int" Nullable="false" />
+          <Property Name="Jabatan_Id" Type="int" Nullable="false" />
+          <Property Name="Effective_Working_Hours" Type="float" />
+        </EntityType>
+        <EntityType Name="WLATrx">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Process_Time" Type="int" Nullable="false" />
+          <Property Name="Frequency" Type="int" Nullable="false" />
+          <Property Name="Sub_Total_Aktivitas" Type="float" Nullable="false" />
+          <Property Name="Effective_Working_Hours" Type="float" Nullable="false" />
+          <Property Name="FTE" Type="float" Nullable="false" />
+          <Property Name="Presentase" Type="float" Nullable="false" />
+          <Property Name="Pelaksana_Id" Type="int" Nullable="false" />
+          <Property Name="Periode_Id" Type="int" Nullable="false" />
+          <Property Name="ActivityGroup_Id" Type="int" Nullable="false" />
+          <Property Name="Activity_Id" Type="int" Nullable="false" />
+          <Property Name="WLAHeader_Id" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <Association Name="FK_ActivityActivityGroupList">
+          <End Role="Activities" Type="Self.Activities" Multiplicity="1" />
+          <End Role="ActivityGroupLists" Type="Self.ActivityGroupLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityGroupLists">
+              <PropertyRef Name="Activity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityGroupActivityGroupList">
+          <End Role="ActivityGroups" Type="Self.ActivityGroups" Multiplicity="1" />
+          <End Role="ActivityGroupLists" Type="Self.ActivityGroupLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityGroups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityGroupLists">
+              <PropertyRef Name="ActivityGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityGroupWLATrx">
+          <End Role="ActivityGroups" Type="Self.ActivityGroups" Multiplicity="1" />
+          <End Role="WLATrx" Type="Self.WLATrx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityGroups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WLATrx">
+              <PropertyRef Name="ActivityGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityWLATrx">
+          <End Role="Activities" Type="Self.Activities" Multiplicity="1" />
+          <End Role="WLATrx" Type="Self.WLATrx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WLATrx">
+              <PropertyRef Name="Activity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FungsiWLAHeader">
+          <End Role="Fungsi" Type="Self.Fungsi" Multiplicity="1" />
+          <End Role="WLAHeaders" Type="Self.WLAHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fungsi">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WLAHeaders">
+              <PropertyRef Name="Fungsi_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JabatanWLAHeader">
+          <End Role="Jabatan" Type="Self.Jabatan" Multiplicity="1" />
+          <End Role="WLAHeaders" Type="Self.WLAHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jabatan">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WLAHeaders">
+              <PropertyRef Name="Jabatan_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PelaksanaWLA">
+          <End Role="Pelaksana" Type="Self.Pelaksana" Multiplicity="1" />
+          <End Role="WLATrx" Type="Self.WLATrx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pelaksana">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WLATrx">
+              <PropertyRef Name="Pelaksana_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PeriodeWLA">
+          <End Role="Periode" Type="Self.Periode" Multiplicity="1" />
+          <End Role="WLATrx" Type="Self.WLATrx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Periode">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WLATrx">
+              <PropertyRef Name="Periode_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WLAHeaderWLATrx">
+          <End Role="WLAHeaders" Type="Self.WLAHeaders" Multiplicity="1" />
+          <End Role="WLATrx" Type="Self.WLATrx" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WLAHeaders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WLATrx">
+              <PropertyRef Name="WLAHeader_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="wlaModelStoreContainer">
+          <EntitySet Name="Activities" EntityType="Self.Activities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityGroupLists" EntityType="Self.ActivityGroupLists" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityGroups" EntityType="Self.ActivityGroups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fungsi" EntityType="Self.Fungsi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Jabatan" EntityType="Self.Jabatan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pelaksana" EntityType="Self.Pelaksana" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Periode" EntityType="Self.Periode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Standard_Time" EntityType="Self.Standard_Time" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WLAHeaders" EntityType="Self.WLAHeaders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WLATrx" EntityType="Self.WLATrx" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ActivityActivityGroupList" Association="Self.FK_ActivityActivityGroupList">
+            <End Role="Activities" EntitySet="Activities" />
+            <End Role="ActivityGroupLists" EntitySet="ActivityGroupLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityGroupActivityGroupList" Association="Self.FK_ActivityGroupActivityGroupList">
+            <End Role="ActivityGroups" EntitySet="ActivityGroups" />
+            <End Role="ActivityGroupLists" EntitySet="ActivityGroupLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityGroupWLATrx" Association="Self.FK_ActivityGroupWLATrx">
+            <End Role="ActivityGroups" EntitySet="ActivityGroups" />
+            <End Role="WLATrx" EntitySet="WLATrx" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityWLATrx" Association="Self.FK_ActivityWLATrx">
+            <End Role="Activities" EntitySet="Activities" />
+            <End Role="WLATrx" EntitySet="WLATrx" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FungsiWLAHeader" Association="Self.FK_FungsiWLAHeader">
+            <End Role="Fungsi" EntitySet="Fungsi" />
+            <End Role="WLAHeaders" EntitySet="WLAHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JabatanWLAHeader" Association="Self.FK_JabatanWLAHeader">
+            <End Role="Jabatan" EntitySet="Jabatan" />
+            <End Role="WLAHeaders" EntitySet="WLAHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PelaksanaWLA" Association="Self.FK_PelaksanaWLA">
+            <End Role="Pelaksana" EntitySet="Pelaksana" />
+            <End Role="WLATrx" EntitySet="WLATrx" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PeriodeWLA" Association="Self.FK_PeriodeWLA">
+            <End Role="Periode" EntitySet="Periode" />
+            <End Role="WLATrx" EntitySet="WLATrx" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WLAHeaderWLATrx" Association="Self.FK_WLAHeaderWLATrx">
+            <End Role="WLAHeaders" EntitySet="WLAHeaders" />
+            <End Role="WLATrx" EntitySet="WLATrx" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="wlaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ActivityGroupLists" Relationship="Self.FK_ActivityActivityGroupList" FromRole="Activities" ToRole="ActivityGroupLists" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="WLATrxes" Relationship="wlaModel.ActivityWLATrx" FromRole="Activity" ToRole="WLATrx" />
+        </EntityType>
+        <EntityType Name="ActivityGroupList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Activity_Id" Type="Int32" Nullable="false" />
+          <Property Name="ActivityGroup_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Activity" Relationship="Self.FK_ActivityActivityGroupList" FromRole="ActivityGroupLists" ToRole="Activities" />
+          <NavigationProperty Name="ActivityGroup" Relationship="Self.FK_ActivityGroupActivityGroupList" FromRole="ActivityGroupLists" ToRole="ActivityGroups" />
+        </EntityType>
+        <EntityType Name="ActivityGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ActivityGroupLists" Relationship="Self.FK_ActivityGroupActivityGroupList" FromRole="ActivityGroups" ToRole="ActivityGroupLists" />
+          <NavigationProperty Name="WLATrxes" Relationship="wlaModel.ActivityGroupWLATrx" FromRole="ActivityGroup" ToRole="WLATrx" />
+        </EntityType>
+        <Association Name="FK_ActivityActivityGroupList">
+          <End Role="Activities" Type="Self.Activity" Multiplicity="1" />
+          <End Role="ActivityGroupLists" Type="Self.ActivityGroupList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityGroupLists">
+              <PropertyRef Name="Activity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityGroupActivityGroupList">
+          <End Role="ActivityGroups" Type="Self.ActivityGroup" Multiplicity="1" />
+          <End Role="ActivityGroupLists" Type="Self.ActivityGroupList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityGroups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivityGroupLists">
+              <PropertyRef Name="ActivityGroup_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="wlaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Activities" EntityType="Self.Activity" />
+          <EntitySet Name="ActivityGroupLists" EntityType="Self.ActivityGroupList" />
+          <EntitySet Name="ActivityGroups" EntityType="Self.ActivityGroup" />
+          <AssociationSet Name="FK_ActivityActivityGroupList" Association="Self.FK_ActivityActivityGroupList">
+            <End Role="Activities" EntitySet="Activities" />
+            <End Role="ActivityGroupLists" EntitySet="ActivityGroupLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityGroupActivityGroupList" Association="Self.FK_ActivityGroupActivityGroupList">
+            <End Role="ActivityGroups" EntitySet="ActivityGroups" />
+            <End Role="ActivityGroupLists" EntitySet="ActivityGroupLists" />
+          </AssociationSet>
+          <EntitySet Name="Fungsi" EntityType="wlaModel.Fungsi" />
+          <EntitySet Name="Jabatan" EntityType="wlaModel.Jabatan" />
+          <EntitySet Name="Pelaksana" EntityType="wlaModel.Pelaksana" />
+          <EntitySet Name="Periode" EntityType="wlaModel.Periode" />
+          <EntitySet Name="WLATrx" EntityType="wlaModel.WLATrx" />
+          <AssociationSet Name="PelaksanaWLA" Association="wlaModel.PelaksanaWLA">
+            <End Role="Pelaksana" EntitySet="Pelaksana" />
+            <End Role="WLA" EntitySet="WLATrx" />
+          </AssociationSet>
+          <AssociationSet Name="PeriodeWLA" Association="wlaModel.PeriodeWLA">
+            <End Role="Periode" EntitySet="Periode" />
+            <End Role="WLA" EntitySet="WLATrx" />
+          </AssociationSet>
+          <EntitySet Name="Standard_Time" EntityType="wlaModel.Standard_Time" />
+          <AssociationSet Name="ActivityGroupWLATrx" Association="wlaModel.ActivityGroupWLATrx">
+            <End Role="ActivityGroup" EntitySet="ActivityGroups" />
+            <End Role="WLATrx" EntitySet="WLATrx" />
+          </AssociationSet>
+          <AssociationSet Name="ActivityWLATrx" Association="wlaModel.ActivityWLATrx">
+            <End Role="Activity" EntitySet="Activities" />
+            <End Role="WLATrx" EntitySet="WLATrx" />
+          </AssociationSet>
+          <EntitySet Name="WLAHeaders" EntityType="wlaModel.WLAHeader" />
+          <AssociationSet Name="FungsiWLAHeader" Association="wlaModel.FungsiWLAHeader">
+            <End Role="Fungsi" EntitySet="Fungsi" />
+            <End Role="WLAHeader" EntitySet="WLAHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="JabatanWLAHeader" Association="wlaModel.JabatanWLAHeader">
+            <End Role="Jabatan" EntitySet="Jabatan" />
+            <End Role="WLAHeader" EntitySet="WLAHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="WLAHeaderWLATrx" Association="wlaModel.WLAHeaderWLATrx">
+            <End Role="WLAHeader" EntitySet="WLAHeaders" />
+            <End Role="WLATrx" EntitySet="WLATrx" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Fungsi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="WLAHeaders" Relationship="wlaModel.FungsiWLAHeader" FromRole="Fungsi" ToRole="WLAHeader" />
+        </EntityType>
+        <EntityType Name="Jabatan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="WLAHeaders" Relationship="wlaModel.JabatanWLAHeader" FromRole="Jabatan" ToRole="WLAHeader" />
+        </EntityType>
+        <EntityType Name="Pelaksana">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="WLAs" Relationship="wlaModel.PelaksanaWLA" FromRole="Pelaksana" ToRole="WLA" />
+        </EntityType>
+        <EntityType Name="Periode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="WLAs" Relationship="wlaModel.PeriodeWLA" FromRole="Periode" ToRole="WLA" />
+        </EntityType>
+        <EntityType Name="WLATrx">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Pelaksana" Relationship="wlaModel.PelaksanaWLA" FromRole="WLA" ToRole="Pelaksana" />
+          <NavigationProperty Name="Periode" Relationship="wlaModel.PeriodeWLA" FromRole="WLA" ToRole="Periode" />
+          <Property Name="Process_Time" Type="Int32" Nullable="false" />
+          <Property Name="Frequency" Type="Int32" Nullable="false" />
+          <Property Name="Sub_Total_Aktivitas" Type="Double" Nullable="false" />
+          <Property Name="Effective_Working_Hours" Type="Double" Nullable="false" />
+          <Property Name="FTE" Type="Double" Nullable="false" />
+          <Property Name="Presentase" Type="Double" Nullable="false" />
+          <NavigationProperty Name="ActivityGroup" Relationship="wlaModel.ActivityGroupWLATrx" FromRole="WLATrx" ToRole="ActivityGroup" />
+          <NavigationProperty Name="Activity" Relationship="wlaModel.ActivityWLATrx" FromRole="WLATrx" ToRole="Activity" />
+          <NavigationProperty Name="WLAHeader" Relationship="wlaModel.WLAHeaderWLATrx" FromRole="WLATrx" ToRole="WLAHeader" />
+          <Property Name="Quantity" Type="Int32" />
+        </EntityType>
+        <Association Name="PelaksanaWLA">
+          <End Type="wlaModel.Pelaksana" Role="Pelaksana" Multiplicity="1" />
+          <End Type="wlaModel.WLATrx" Role="WLA" Multiplicity="*" />
+        </Association>
+        <Association Name="PeriodeWLA">
+          <End Type="wlaModel.Periode" Role="Periode" Multiplicity="1" />
+          <End Type="wlaModel.WLATrx" Role="WLA" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Standard_Time">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tahun" Type="Int32" Nullable="false" />
+          <Property Name="Day" Type="Int32" Nullable="false" />
+          <Property Name="Saturday" Type="Int32" Nullable="false" />
+          <Property Name="Sunday" Type="Int32" Nullable="false" />
+          <Property Name="Holiday" Type="Int32" Nullable="false" />
+          <Property Name="Annual_Leaves" Type="Int32" Nullable="false" />
+          <Property Name="Sick_Permission" Type="Int32" Nullable="false" />
+          <Property Name="Working_Days" Type="Int32" Nullable="false" />
+          <Property Name="Effective_Working_Days" Type="Int32" Nullable="false" />
+          <Property Name="Working_Hours" Type="Int32" Nullable="false" />
+          <Property Name="Utilitation_Level" Type="Double" Nullable="false" />
+          <Property Name="Effective_Working_Hours" Type="Double" Nullable="false" />
+        </EntityType>
+        <Association Name="ActivityGroupWLATrx">
+          <End Type="wlaModel.ActivityGroup" Role="ActivityGroup" Multiplicity="1" />
+          <End Type="wlaModel.WLATrx" Role="WLATrx" Multiplicity="*" />
+        </Association>
+        <Association Name="ActivityWLATrx">
+          <End Type="wlaModel.Activity" Role="Activity" Multiplicity="1" />
+          <End Type="wlaModel.WLATrx" Role="WLATrx" Multiplicity="*" />
+        </Association>
+        <EntityType Name="WLAHeader">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tahun" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fungsi" Relationship="wlaModel.FungsiWLAHeader" FromRole="WLAHeader" ToRole="Fungsi" />
+          <NavigationProperty Name="Jabatan" Relationship="wlaModel.JabatanWLAHeader" FromRole="WLAHeader" ToRole="Jabatan" />
+          <Property Name="FTE" Type="Double" Nullable="false" />
+          <NavigationProperty Name="WLATrxes" Relationship="wlaModel.WLAHeaderWLATrx" FromRole="WLAHeader" ToRole="WLATrx" />
+          <Property Name="Effective_Working_Hours" Type="Double" />
+        </EntityType>
+        <Association Name="FungsiWLAHeader">
+          <End Type="wlaModel.Fungsi" Role="Fungsi" Multiplicity="1" />
+          <End Type="wlaModel.WLAHeader" Role="WLAHeader" Multiplicity="*" />
+        </Association>
+        <Association Name="JabatanWLAHeader">
+          <End Type="wlaModel.Jabatan" Role="Jabatan" Multiplicity="1" />
+          <End Type="wlaModel.WLAHeader" Role="WLAHeader" Multiplicity="*" />
+        </Association>
+        <Association Name="WLAHeaderWLATrx">
+          <End Type="wlaModel.WLAHeader" Role="WLAHeader" Multiplicity="1" />
+          <End Type="wlaModel.WLATrx" Role="WLATrx" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="wlaModelStoreContainer" CdmEntityContainer="wlaEntities">
+    <EntitySetMapping Name="Activities">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.Activity)">
+        <MappingFragment StoreEntitySet="Activities">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivityGroupLists">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.ActivityGroupList)">
+        <MappingFragment StoreEntitySet="ActivityGroupLists">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Activity_Id" ColumnName="Activity_Id" />
+          <ScalarProperty Name="ActivityGroup_Id" ColumnName="ActivityGroup_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivityGroups">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.ActivityGroup)">
+        <MappingFragment StoreEntitySet="ActivityGroups">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Fungsi">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.Fungsi)">
+        <MappingFragment StoreEntitySet="Fungsi">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Jabatan">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.Jabatan)">
+        <MappingFragment StoreEntitySet="Jabatan">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pelaksana">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.Pelaksana)">
+        <MappingFragment StoreEntitySet="Pelaksana">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Periode">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.Periode)">
+        <MappingFragment StoreEntitySet="Periode">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WLATrx">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.WLATrx)">
+        <MappingFragment StoreEntitySet="WLATrx">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Process_Time" ColumnName="Process_Time" />
+          <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+          <ScalarProperty Name="Sub_Total_Aktivitas" ColumnName="Sub_Total_Aktivitas" />
+          <ScalarProperty Name="Effective_Working_Hours" ColumnName="Effective_Working_Hours" />
+          <ScalarProperty Name="FTE" ColumnName="FTE" />
+          <ScalarProperty Name="Presentase" ColumnName="Presentase" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Standard_Time">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.Standard_Time)">
+        <MappingFragment StoreEntitySet="Standard_Time">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Tahun" ColumnName="Tahun" />
+          <ScalarProperty Name="Day" ColumnName="Day" />
+          <ScalarProperty Name="Saturday" ColumnName="Saturday" />
+          <ScalarProperty Name="Sunday" ColumnName="Sunday" />
+          <ScalarProperty Name="Holiday" ColumnName="Holiday" />
+          <ScalarProperty Name="Annual_Leaves" ColumnName="Annual_Leaves" />
+          <ScalarProperty Name="Sick_Permission" ColumnName="Sick_Permission" />
+          <ScalarProperty Name="Working_Days" ColumnName="Working_Days" />
+          <ScalarProperty Name="Effective_Working_Days" ColumnName="Effective_Working_Days" />
+          <ScalarProperty Name="Working_Hours" ColumnName="Working_Hours" />
+          <ScalarProperty Name="Utilitation_Level" ColumnName="Utilitation_Level" />
+          <ScalarProperty Name="Effective_Working_Hours" ColumnName="Effective_Working_Hours" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WLAHeaders">
+      <EntityTypeMapping TypeName="IsTypeOf(wlaModel.WLAHeader)">
+        <MappingFragment StoreEntitySet="WLAHeaders">
+                <ScalarProperty Name="Effective_Working_Hours" ColumnName="Effective_Working_Hours" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Tahun" ColumnName="Tahun" />
+          <ScalarProperty Name="FTE" ColumnName="FTE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PelaksanaWLA" TypeName="wlaModel.PelaksanaWLA" StoreEntitySet="WLATrx">
+      <EndProperty Name="Pelaksana">
+        <ScalarProperty Name="Id" ColumnName="Pelaksana_Id" />
+      </EndProperty>
+      <EndProperty Name="WLA">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="PeriodeWLA" TypeName="wlaModel.PeriodeWLA" StoreEntitySet="WLATrx">
+      <EndProperty Name="Periode">
+        <ScalarProperty Name="Id" ColumnName="Periode_Id" />
+      </EndProperty>
+      <EndProperty Name="WLA">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ActivityGroupWLATrx" TypeName="wlaModel.ActivityGroupWLATrx" StoreEntitySet="WLATrx">
+      <EndProperty Name="ActivityGroup">
+        <ScalarProperty Name="Id" ColumnName="ActivityGroup_Id" />
+      </EndProperty>
+      <EndProperty Name="WLATrx">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ActivityWLATrx" TypeName="wlaModel.ActivityWLATrx" StoreEntitySet="WLATrx">
+      <EndProperty Name="Activity">
+        <ScalarProperty Name="Id" ColumnName="Activity_Id" />
+      </EndProperty>
+      <EndProperty Name="WLATrx">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FungsiWLAHeader" TypeName="wlaModel.FungsiWLAHeader" StoreEntitySet="WLAHeaders">
+            <EndProperty Name="WLAHeader">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Fungsi">
+              <ScalarProperty Name="Id" ColumnName="Fungsi_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+    <AssociationSetMapping Name="JabatanWLAHeader" TypeName="wlaModel.JabatanWLAHeader" StoreEntitySet="WLAHeaders">
+      <EndProperty Name="WLAHeader">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Jabatan">
+        <ScalarProperty Name="Id" ColumnName="Jabatan_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="WLAHeaderWLATrx" TypeName="wlaModel.WLAHeaderWLATrx" StoreEntitySet="WLATrx">
+      <EndProperty Name="WLAHeader">
+        <ScalarProperty Name="Id" ColumnName="WLAHeader_Id" />
+      </EndProperty>
+      <EndProperty Name="WLATrx">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

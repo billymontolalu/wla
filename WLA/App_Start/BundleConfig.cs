@@ -20,6 +20,7 @@ namespace WLA
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/select2.js",
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
@@ -29,6 +30,7 @@ namespace WLA
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/css/select2.css",
                       "~/Content/DataTables/css/dataTables.bootstrap4.css",
                       "~/Content/site.css"));
         }

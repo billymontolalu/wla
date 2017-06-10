@@ -1,0 +1,113 @@
+﻿@model WLA.Models.WLAHeader
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>Work Load Analysis</h4>
+    
+    <table class="table">
+        <tr>
+            <td width="30%">Fungsi</td>
+            <td>@Html.DisplayFor(model => model.Fungsi.Name)</td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>@Html.DisplayFor(model => model.Jabatan.Name)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.Tahun)</td>
+            <td>@Html.DisplayFor(model => model.Tahun)</td>
+        </tr>
+        <tr>
+            <td>Effective Working Hour</td>
+            <td>@Html.DisplayFor(model => model.Effective_Working_Hours)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.FTE)</td>
+            <td>@Html.DisplayFor(model => model.FTE)</td>
+        </tr>
+    </table>
+</div>
+<p>
+    <div class="btn-group">
+        <a href="/../WLATrx/Create/@ViewBag.WLAHeaderId" class="btn btn-danger">Create New</a>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Show <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="/../WLAHeaders/Details/@ViewBag.WLAHeaderId">Activity</a></li>
+            <li><a href="/../WLAHeaders/Groups/@ViewBag.WLAHeaderId">Activity Group</a></li>
+        </ul>
+    </div>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Activity Group
+        </th>
+        <th>
+            Activity
+        </th>
+        <th>
+            Periode
+        </th>
+        <th>
+            Pelaksana
+        </th>
+        <th>
+            Process Time (minute)
+        </th>
+        <th>
+            Frequency (per day/week/year)
+        </th>
+        <th>
+            Sub Total Aktivitas (hours/year)
+        </th>
+        
+        <th></th>
+    </tr>
+
+    @foreach (var item in ViewBag.wLATrx as List<WLA.Models.WLATrx>)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityGroup.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Periode.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pelaksana.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Process_Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Frequency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sub_Total_Aktivitas)
+            </td>
+            
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-danger" })
+</p>

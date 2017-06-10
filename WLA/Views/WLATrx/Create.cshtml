@@ -1,4 +1,4 @@
-﻿@model WLA.WLATrx
+﻿@model WLA.Models.WLATrx
 
 @{
     ViewBag.Title = "Create";
@@ -12,9 +12,34 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>WLATrx</h4>
+        <h4>Work Load Analysis</h4>
         <hr />
+        <input type="hidden" name="WLAHeaderId" value="@ViewBag.WLAHeaderId" />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ActivityGroup, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ActivityGroup", (IEnumerable<SelectListItem>)ViewBag.ActivityGroup, new { @class = "form-control autocomplete" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Activity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Activity", (IEnumerable<SelectListItem>)ViewBag.Activity, new { @class = "form-control autocomplete" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Periode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Periode", null, new { @class = "form-control autocomplete" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Pelaksana, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Pelaksana", null, new { @class = "form-control autocomplete" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Process_Time, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -22,44 +47,18 @@
                 @Html.ValidationMessageFor(model => model.Process_Time, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Frequency, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Frequency, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Frequency, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Sub_Total_Aktivitas, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Sub_Total_Aktivitas, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Sub_Total_Aktivitas, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Effective_Working_Hours, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Effective_Working_Hours, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Effective_Working_Hours, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FTE, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FTE, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FTE, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Presentase, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Presentase, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Presentase, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -72,9 +71,15 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    
+    <a href="/../WLAHeaders/Details/@ViewBag.WLAHeaderId" class="btn btn-danger">Back to List</a>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $(".autocomplete").select2();
+    });
+    </script>
 }

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WLA;
 using PagedList;
+using WLA.Models;
 
 namespace WLA.Controllers
 {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using WLA;
+using WLA.Models;
 
 namespace WLA.Controllers
 {
@@ -46,10 +46,20 @@ namespace WLA.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Tahun,Day,Saturday,Sunday,Holiday,Annual_Leaves,Sick_Permission,Working_Days,Effective_Working_Days,Working_Hours,Utilitation_Level,Effective_Working_Hours")] Standard_Time standard_Time)
+        public ActionResult Create([Bind(Include = "Id,Tahun,Holiday,Annual_Leaves,Sick_Permission,Working_Days,Effective_Working_Days,Working_Hours,Utilitation_Level,Effective_Working_Hours")] Standard_Time standard_Time)
         {
             if (ModelState.IsValid)
             {
+                Helper hp = new Helper();
+                DateTime dt = new DateTime(standard_Time.Tahun, 12, 31);
+
+                standard_Time.Saturday = hp.GetAllSaturday(standard_Time.Tahun);
+                standard_Time.Sunday = hp.GetAllSunday(standard_Time.Tahun);
+                standard_Time.Day = dt.DayOfYear;
+                
+                standard_Time.Working_Days = standard_Time.Day - standard_Time.Saturday - standard_Time.Sunday - standard_Time.Holiday;
+                standard_Time.Effective_Working_Days = standard_Time.Working_Days - standard_Time.Annual_Leaves - standard_Time.Sick_Permission;
+                standard_Time.Effective_Working_Hours = standard_Time.Effective_Working_Days * standard_Time.Working_Hours * standard_Time.Utilitation_Level / 100;
                 db.Standard_Time.Add(standard_Time);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,10 +88,21 @@ namespace WLA.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Tahun,Day,Saturday,Sunday,Holiday,Annual_Leaves,Sick_Permission,Working_Days,Effective_Working_Days,Working_Hours,Utilitation_Level,Effective_Working_Hours")] Standard_Time standard_Time)
+        public ActionResult Edit([Bind(Include = "Id,Tahun,Holiday,Annual_Leaves,Sick_Permission,Working_Hours,Utilitation_Level")] Standard_Time standard_Time)
         {
             if (ModelState.IsValid)
             {
+                Helper hp = new Helper();
+                DateTime dt = new DateTime(standard_Time.Tahun, 12, 31);
+
+                standard_Time.Saturday = hp.GetAllSaturday(standard_Time.Tahun);
+                standard_Time.Sunday = hp.GetAllSunday(standard_Time.Tahun);
+                standard_Time.Day = dt.DayOfYear;
+
+                standard_Time.Working_Days = standard_Time.Day - standard_Time.Saturday - standard_Time.Sunday - standard_Time.Holiday;
+                standard_Time.Effective_Working_Days = standard_Time.Working_Days - standard_Time.Annual_Leaves - standard_Time.Sick_Permission;
+                standard_Time.Effective_Working_Hours = standard_Time.Effective_Working_Days * standard_Time.Working_Hours * standard_Time.Utilitation_Level / 100;
+
                 db.Entry(standard_Time).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

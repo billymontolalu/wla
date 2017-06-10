@@ -1,0 +1,82 @@
+﻿@model WLA.Models.Groups
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>Work Load Analysis</h4>
+
+    <table class="table">
+        <tr>
+            <td width="30%">Fungsi</td>
+            <td>@Html.DisplayFor(model => model.WLAHeader.Fungsi.Name)</td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>@Html.DisplayFor(model => model.WLAHeader.Jabatan.Name)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.WLAHeader.Tahun)</td>
+            <td>@Html.DisplayFor(model => model.WLAHeader.Tahun)</td>
+        </tr>
+        <tr>
+            <td>Effective Working Hour</td>
+            <td>@Html.DisplayFor(model => model.WLAHeader.Effective_Working_Hours)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.WLAHeader.FTE)</td>
+            <td>@Html.DisplayFor(model => model.WLAHeader.FTE)</td>
+        </tr>
+    </table>
+</div>
+<p>
+    <div class="btn-group">
+        <a href="/../WLATrx/Create/@ViewBag.WLAHeaderId" class="btn btn-danger">Create New</a>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Show <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="/../WLAHeaders/Details/@ViewBag.WLAHeaderId">Activity</a></li>
+            <li><a href="/../WLAHeaders/Groups/@ViewBag.WLAHeaderId">Activity Group</a></li>
+        </ul>
+    </div>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Activity Group
+        </th>
+        <th>
+            Effective_Working_Hours per Year
+        </th>
+        <th>
+            FTE
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.GroupModel)
+    {
+        <tr>
+            <td>
+                @item.ActivityGroup
+            </td>
+            <td>
+                @item.Effective_Working_Hours
+            </td>
+            <td>
+            </td>
+            <td></td>
+        </tr>
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.WLAHeader.Id }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-danger" })
+</p>
