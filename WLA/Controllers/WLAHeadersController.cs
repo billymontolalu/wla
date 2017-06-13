@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using WLA.Models;
 using PagedList;
+using System.IO;
+using System.Text.RegularExpressions;
+using OfficeOpenXml;
 
 namespace WLA.Controllers
 {
@@ -59,8 +62,14 @@ namespace WLA.Controllers
             Groups gm = new Groups();
             gm.WLAHeader = db.WLAHeaders.Find(id);
 
-            var standarTime = db.Standard_Time.Where(g => g.Tahun == gm.WLAHeader.Tahun);
+            var standarTime = db.Standard_Time.Where(g => g.Tahun == gm.WLAHeader.Tahun).ToArray();
 
+            if (standarTime == null)
+            {
+                return HttpNotFound();
+            }
+
+            double efective_working_hour = standarTime[0].Effective_Working_Hours;
             gm.GroupModel = db.WLATrx.Where(
                 c => c.WLAHeader.Id == id
             ).GroupBy(
@@ -69,7 +78,8 @@ namespace WLA.Controllers
                 g => new GroupModel
                 {
                     ActivityGroup = g.Key.ActivityGroup,
-                    Effective_Working_Hours = g.Sum(x => x.Sub_Total_Aktivitas)
+                    Effective_Working_Hours = g.Sum(x => x.Sub_Total_Aktivitas),
+                    FTE = g.Sum(x => x.Sub_Total_Aktivitas) / efective_working_hour
                 }
             ).ToList().ToArray();
 
@@ -206,6 +216,180 @@ namespace WLA.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private string GetSafeFileName(string Filename, string Replacement)
+        {
+            if (Filename == null)
+            {
+                return string.Empty;
+            }
+            var illegalChars = String.Concat(String.Join(String.Empty, Path.GetInvalidFileNameChars().Select(x => x.ToString()).ToArray()), "~!@#$%^&()+=`';,");
+
+            var illegalPattern = new Regex("[" + Regex.Escape(illegalChars) + "]");
+
+            return Regex.Replace(illegalPattern.Replace(Filename, Replacement), @"\s+", " ");
+        }
+
+        public ActionResult AddAttachment(string ElementId)
+        {
+            JsonResult ReturnObject = new JsonResult();
+            ReturnObject.ContentType = "text/html";
+            Dictionary<string, string> JsonData = new Dictionary<string, string>();
+            string AttachmentPath = string.Empty;
+
+            try
+            {
+                AttachmentPath = Server.MapPath("~/Content/UploadData");
+
+                if (!Directory.Exists(AttachmentPath))
+                {
+                    Directory.CreateDirectory(AttachmentPath);
+                }
+                var File = Request.Files[ElementId];
+                string FileName = Path.GetFileName(File.FileName);
+                var FileNameSplit = FileName.Split('.');
+                if (FileNameSplit[FileNameSplit.Length - 1].ToLower() != "xlsx" && FileNameSplit[FileNameSplit.Length - 1].ToLower() != "xls")
+                {
+                    JsonData.Add("Url", string.Empty);
+                    JsonData.Add("Filename", string.Empty);
+                    JsonData.Add("Success", "false");
+                    JsonData.Add("Message", "Please upload only excel file from templates.");
+                }
+                else
+                {
+                    FileName = GetSafeFileName(FileName, string.Empty);
+                    AttachmentPath = AttachmentPath + "\\" + FileName;
+                    File.SaveAs(AttachmentPath);
+                    string Url = String.Format("<a class=\"lightLink\" target=\"_blank\" href=\"{0}\">{1}</a>", AttachmentPath, FileName);
+                    JsonData.Add("Url", Url);
+                    JsonData.Add("Filename", FileName);
+                    JsonData.Add("Success", "true");
+                    JsonData.Add("Message", string.Empty);
+                }
+            }
+            catch (Exception e)
+            {
+                JsonData.Add("Url", string.Empty);
+                JsonData.Add("Filename", string.Empty);
+                JsonData.Add("Success", "false");
+                JsonData.Add("Message", e.Message);
+            }
+            ReturnObject.Data = JsonData;
+            return ReturnObject;
+        }
+
+        public ActionResult UploadData(string Filename)
+        {
+            Boolean IsSuccess = false;
+            string strMessage = string.Empty;
+            string UploadLoanPath = Server.MapPath("~/Content/UploadData/" + Filename);
+            try
+            {
+                FileStream file = new FileStream(UploadLoanPath, FileMode.Open, FileAccess.Read);
+                ExcelPackage ExcelPackage = new ExcelPackage(file);
+                ExcelWorksheet ExcelWorksheet = ExcelPackage.Workbook.Worksheets["Sheet1"];
+
+                try
+                {
+                    var hasValue = true;
+                    var i = 6;
+                    WLATrx wLATrx = new WLATrx();
+                    int tahun = Convert.ToInt32(ExcelWorksheet.Cells[1, 3].Text.Trim());
+                    string fungsi = ExcelWorksheet.Cells[2, 3].Text.Trim();
+                    string jabatan = ExcelWorksheet.Cells[3, 3].Text.Trim();
+                    var wlaheader = db.WLAHeaders.Where(s => s.Tahun == tahun && s.Fungsi.Name.Equals(fungsi) && s.Jabatan.Name.Equals(jabatan)).First();
+                    if (wlaheader == null)
+                    {
+                        WLAHeader x = new WLAHeader();
+                        x.Tahun = tahun;
+                        x.Fungsi = db.Fungsi.Where(c => c.Name.Equals(fungsi)).First();
+                        x.Jabatan = db.Jabatan.Where(c => c.Name.Equals(jabatan)).First();
+                        db.WLAHeaders.Add(x);
+                        db.SaveChanges();
+                        wlaheader = db.WLAHeaders.Where(s => s.Tahun == tahun && s.Fungsi.Name.Equals(fungsi) && s.Jabatan.Name.Equals(jabatan)).First();
+                    }
+                    //Looping data dr excel
+                    while (hasValue)
+                    {
+                        if (string.IsNullOrEmpty(ExcelWorksheet.Cells[i, 3].Text))
+                        {
+                            hasValue = false;
+                            continue;
+                        }
+                        string activity_s = ExcelWorksheet.Cells[i, 3].Text.Trim();
+                        var activity =  db.Activities.Where(s => s.Name.Equals(activity_s)).FirstOrDefault();
+                        if (activity == null)
+                        {
+                            Activity x = new Activity();
+                            x.Name = activity_s;
+                            db.Activities.Add(x);
+                            db.SaveChanges();
+                            activity = db.Activities.Where(s => s.Name.Equals(activity_s)).First();
+                        }
+                        wLATrx.Activity = activity;
+
+                        string activityGroup_s = ExcelWorksheet.Cells[i, 2].Text.Trim();
+                        var activityGroup = db.ActivityGroups.Where(s => s.Name.Equals(activityGroup_s)).First();
+                        if (activityGroup == null)
+                        {
+                            ActivityGroup x = new ActivityGroup();
+                            x.Name = activityGroup_s;
+                            db.ActivityGroups.Add(x);
+                            db.SaveChanges();
+                            activityGroup = db.ActivityGroups.Where(s => s.Name.Equals(activityGroup_s)).First();
+                        }
+                        wLATrx.ActivityGroup = activityGroup;
+
+                        string pelaksana = ExcelWorksheet.Cells[i, 4].Text.Trim();
+                        wLATrx.Pelaksana = db.Pelaksana.Where(c => c.Name.Equals(pelaksana)).First();
+
+                        string periode = ExcelWorksheet.Cells[i, 5].Text.Trim();
+                        wLATrx.Periode = db.Periode.Where(c => c.Name.Equals(periode)).First();
+
+                        int Periode_Value = 0;
+                        WLAModel wm = new WLAModel();
+                        Periode_Value = wm.getPeriode(wLATrx.Periode.Id);
+                        wLATrx.WLAHeader = wlaheader;
+                        wLATrx.Process_Time = Convert.ToInt32(ExcelWorksheet.Cells[i, 6].Text.Trim());
+                        wLATrx.Quantity = Convert.ToInt32(ExcelWorksheet.Cells[i, 7].Text.Trim());
+                        wLATrx.Frequency = Convert.ToInt32(ExcelWorksheet.Cells[i, 8].Text.Trim());
+                        wLATrx.Sub_Total_Aktivitas = (double)(Periode_Value * wLATrx.Process_Time * wLATrx.Quantity * wLATrx.Frequency) / 60;
+                        db.WLATrx.Add(wLATrx);
+                        db.SaveChanges();
+
+                        var standardTime = db.Standard_Time.Where(d => d.Tahun == tahun).First();
+                        var Sub_Total_Aktivitas = db.WLATrx.Where(d => d.WLAHeader.Id == wlaheader.Id).Sum(d => d.Sub_Total_Aktivitas);
+                        var dataHeader = db.WLAHeaders.Find(wlaheader.Id);
+                        dataHeader.Effective_Working_Hours = Sub_Total_Aktivitas;
+                        dataHeader.FTE = Sub_Total_Aktivitas / standardTime.Effective_Working_Hours;
+                        db.SaveChanges();
+                        i++;
+                    }
+
+                    
+                }
+                catch (Exception e)
+                {
+                    file.Close();
+                    file.Dispose();
+                    throw new Exception(e.Message);
+                }
+
+                IsSuccess = true;
+
+                file.Close();
+                file.Dispose();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return Json(new
+            {
+                status = IsSuccess,
+                message = strMessage
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

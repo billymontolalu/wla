@@ -21,7 +21,7 @@ namespace WLA.Models
         }
     
         public int Id { get; set; }
-        public int Tahun { get; set; }
+        public Nullable<int> Tahun { get; set; }
         public double FTE { get; set; }
         public Nullable<double> Effective_Working_Hours { get; set; }
     

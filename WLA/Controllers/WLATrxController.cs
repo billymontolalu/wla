@@ -75,26 +75,9 @@ namespace WLA.Controllers
             if (ModelState.IsValid)
             {
                 int Periode_Value = 0;
-                //daily
-                if (PeriodeId == 1)
-                {
-                    Periode_Value = 251;
-                }
-                //weekly
-                else if (PeriodeId == 2)
-                {
-                    Periode_Value = 52;
-                }
-                //monthly
-                else if (PeriodeId == 3)
-                {
-                    Periode_Value = 12;
-                }
-                //annualy
-                else if (PeriodeId == 3)
-                {
-                    Periode_Value = 1;
-                }
+
+                WLAModel wm = new WLAModel();
+                Periode_Value = wm.getPeriode(PeriodeId);
 
                 wLATrx.Sub_Total_Aktivitas = (double)(Periode_Value * wLATrx.Process_Time * wLATrx.Quantity * wLATrx.Frequency)/60;
 

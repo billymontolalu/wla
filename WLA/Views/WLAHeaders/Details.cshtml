@@ -1,5 +1,4 @@
 ﻿@model WLA.Models.WLAHeader
-
 @{
     ViewBag.Title = "Details";
 }
@@ -107,7 +106,107 @@
     }
 
 </table>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-md-3 control-label">Update Data dari Excel</label>
+        <div class="col-md-9">
+            <input type="hidden" id="UploadData" name="UploadData" />
+            <div id="dvUploadDataFile">
+                <input type="file" id="UploadDataFile" name="UploadDataFile" onchange="return jQuery.fn.UploadDataOnChange();" />
+            </div>
+            <div id="dvUploadDataLink" style="display: none;">
+                <label id="lblUploadDataLink"></label>
+                <div id="dvResetUploadLoanLink" style="display:inline;">
+                    <button id="btnReset" type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Reset</button>
+                </div>
+            </div>
+            <button style="margin-top:5px;" id="btnUpload" type="button" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
+        </div>
+    </div>
+</form>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-danger" })
     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-danger" })
 </p>
+@section Scripts {
+    @Scripts.Render("~/bundles/ajaxfileupload")
+    <script type="text/javascript">
+        @App.BaseUrl
+        jQuery(document).ready(function () {
+            function ResetUploadData() {
+                $("#lblUploadDataLink").html('');
+                $("#UploadData").val('');
+                $("#UploadDataFile").val('');
+                $('#dvUploadDataLink').hide();
+                $('#dvUploadDataFile').show();
+            }
+            $("#btnUpload").click(function () {
+                var err_code = 0;
+                var err_message = "";
+
+                if (err_code == 0) {
+                    if ($("#UploadData").val() == "") {
+                        err_code++;
+                        err_message = "Select File";
+                    }
+                }
+
+                if (err_code == 0) {
+                    $.ajax({
+                        type: "POST",
+                        global: false,
+                        url: "@(App.BaseUrl)WLAHeaders/UploadData",
+                        data: { Filename: $("#UploadData").val() },
+                        beforeSend: function () {
+                            $.blockUI({ message: "<h1>Response in progress...</h1>" });
+                        },
+                        complete: function () {
+                            $.unblockUI();
+                        },
+                        success: function (data, status) {
+                            if (data.status) {
+                                bootbox.alert("Upload sukses");
+                            } else {
+                                bootbox.alert(data.message);
+
+                            }
+                        },
+                        error: function (status, error) {
+                            bootbox.alert(error);
+                        }
+                    });
+
+                    ResetUploadData();
+                } else {
+                    bootbox.alert(err_message);
+                }
+
+            });
+
+            jQuery.fn.UploadDataOnChange = function () {
+                var ElementId = "UploadDataFile";
+                $.ajaxFileUpload({
+                    url: "@(App.BaseUrl)WLAHeaders/AddAttachment?ElementId=" + ElementId,
+                    secureuri: false,
+                    dataType: 'json',
+                    fileElementId: ElementId,
+                    success: function (data, status) {
+                        if (data.Success == "false") {
+                            $("#UploadDataFile").val('');
+                            $("#UploadData").val("");
+                            alert("Error upload");
+                        } else {
+                            $("#lblUploadDataLink").html(data.Url);
+                            $("#UploadData").val(data.Filename);
+                            $('#dvUploadDataLink').show();
+                            $('#dvUploadDataFile').hide();
+                        }
+                    },
+                    error: function (data, status, e) {
+                        alert("Error upload");
+                    }
+                });
+            };
+        });
+    </script>
+}

@@ -79,7 +79,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Tahun" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Tahun" Type="int" />
           <Property Name="FTE" Type="float" Nullable="false" />
           <Property Name="Fungsi_Id" Type="int" Nullable="false" />
           <Property Name="Jabatan_Id" Type="int" Nullable="false" />
@@ -453,7 +453,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Tahun" Type="Int32" Nullable="false" />
+          <Property Name="Tahun" Type="Int32" />
           <NavigationProperty Name="Fungsi" Relationship="wlaModel.FungsiWLAHeader" FromRole="WLAHeader" ToRole="Fungsi" />
           <NavigationProperty Name="Jabatan" Relationship="wlaModel.JabatanWLAHeader" FromRole="WLAHeader" ToRole="Jabatan" />
           <Property Name="FTE" Type="Double" Nullable="false" />
