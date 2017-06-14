@@ -9,6 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-danger" })
 </p>
+
 <table class="table">
     <tr>
         <th>
@@ -89,9 +90,16 @@
             @Html.DisplayFor(modelItem => item.Effective_Working_Hours)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Action <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="@(App.BaseUrl)StandardTime/Edit/@item.Id">Edit</a></li>
+                    <li><a href="@(App.BaseUrl)StandardTime/Details/@item.Id">Details</a></li>
+                    <li><a href="@(App.BaseUrl)StandardTime/Delete/@item.Id">Delete</a></li>
+                </ul>
+            </div>
         </td>
     </tr>
 }

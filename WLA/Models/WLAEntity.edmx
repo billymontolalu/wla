@@ -27,6 +27,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Sarpras" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Fungsi">
           <Key>
@@ -291,6 +292,7 @@
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="ActivityGroupLists" Relationship="Self.FK_ActivityGroupActivityGroupList" FromRole="ActivityGroups" ToRole="ActivityGroupLists" />
           <NavigationProperty Name="WLATrxes" Relationship="wlaModel.ActivityGroupWLATrx" FromRole="ActivityGroup" ToRole="WLATrx" />
+          <Property Name="Sarpras" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_ActivityActivityGroupList">
           <End Role="Activities" Type="Self.Activity" Multiplicity="1" />
@@ -499,7 +501,8 @@
     <EntitySetMapping Name="ActivityGroups">
       <EntityTypeMapping TypeName="IsTypeOf(wlaModel.ActivityGroup)">
         <MappingFragment StoreEntitySet="ActivityGroups">
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Sarpras" ColumnName="Sarpras" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>

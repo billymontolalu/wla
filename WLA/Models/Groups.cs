@@ -7,6 +7,7 @@ namespace WLA.Models
 {
     public partial class GroupModel
     {
+        public int ActivityGroupId { get; set; }
         public string ActivityGroup { get; set; }
         public double Effective_Working_Hours { get; set; }
         public double FTE { get; set; }

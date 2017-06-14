@@ -26,7 +26,7 @@ namespace WLA.Models
                 return 12;
             }
             //annualy
-            else if (PeriodeId == 3)
+            else if (PeriodeId == 4)
             {
                 return 1;
             }

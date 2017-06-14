@@ -25,8 +25,7 @@ namespace WLA
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/select2.js",
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/jQuery.min.js",
-                      "~/Scripts/bootbox.min.js",
+                      "~/Scripts/bootbox.js",
                       "~/Scripts/jquery.blockUI.js",
                       "~/Scripts/respond.js"));
 
@@ -34,11 +33,11 @@ namespace WLA
                       "~/Scripts/DataTables/jquery.dataTables.js",
                       "~/Scripts/DataTables/dataTables.bootstrap4.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/css/select2.css",
                       "~/Content/DataTables/css/dataTables.bootstrap4.css",
-                      "~/Content/site.css"));
+                      "~/Content/Site.css"));
         }
     }
 }

@@ -21,8 +21,9 @@ namespace WLA.Controllers
         // GET: WLAHeaders
         public ActionResult Index(int? page)
         {
+            Math.Ceiling(1.4);
             var wlaheader = from s in db.WLAHeaders
-                             select s;
+                            select s;
             wlaheader = wlaheader.OrderBy(s => s.Jabatan.Name);
             int pageSize = 10;
             int pageNumber = (page ?? 1);
@@ -32,14 +33,14 @@ namespace WLA.Controllers
         // GET: WLAHeaders/Details/5
         public ActionResult Details(int? id)
         {
-            
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             WLAHeader wLAHeader = db.WLAHeaders.Find(id);
-            ViewBag.wLATrx = (from s in db.WLATrx where s.WLAHeader.Id == (id ?? 0) select s).ToList();
+            ViewBag.wLATrx = (from s in db.WLATrx where s.WLAHeader.Id == (id ?? 0) orderby s.ActivityGroup.Name select s).ToList();
             if (wLAHeader == null)
             {
                 return HttpNotFound();
@@ -58,7 +59,7 @@ namespace WLA.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             Groups gm = new Groups();
             gm.WLAHeader = db.WLAHeaders.Find(id);
 
@@ -73,11 +74,15 @@ namespace WLA.Controllers
             gm.GroupModel = db.WLATrx.Where(
                 c => c.WLAHeader.Id == id
             ).GroupBy(
-                g => new { ActivityGroup = g.ActivityGroup.Name
-            }).Select(
+                g => new
+                {
+                    ActivityGroup = g.ActivityGroup.Name,
+                    ActivityGroupId = g.ActivityGroup.Id
+                }).Select(
                 g => new GroupModel
                 {
                     ActivityGroup = g.Key.ActivityGroup,
+                    ActivityGroupId = g.Key.ActivityGroupId,
                     Effective_Working_Hours = g.Sum(x => x.Sub_Total_Aktivitas),
                     FTE = g.Sum(x => x.Sub_Total_Aktivitas) / efective_working_hour
                 }
@@ -110,7 +115,7 @@ namespace WLA.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Tahun,FTE")] WLAHeader wLAHeader, FormCollection formData)
+        public ActionResult Create([Bind(Include = "Id,Tahun")] WLAHeader wLAHeader, FormCollection formData)
         {
             if (ModelState.IsValid)
             {
@@ -149,7 +154,7 @@ namespace WLA.Controllers
 
             ViewBag.Fungsi = new SelectList(db.Fungsi, "Id", "Name", wLAHeader.Fungsi.Id);
             ViewBag.Jabatan = new SelectList(db.Jabatan, "Id", "Name", wLAHeader.Jabatan.Id);
-            
+
             return View(wLAHeader);
         }
 
@@ -284,17 +289,16 @@ namespace WLA.Controllers
             Boolean IsSuccess = false;
             string strMessage = string.Empty;
             string UploadLoanPath = Server.MapPath("~/Content/UploadData/" + Filename);
+            var i = 6;
             try
             {
                 FileStream file = new FileStream(UploadLoanPath, FileMode.Open, FileAccess.Read);
                 ExcelPackage ExcelPackage = new ExcelPackage(file);
                 ExcelWorksheet ExcelWorksheet = ExcelPackage.Workbook.Worksheets["Sheet1"];
-
                 try
                 {
                     var hasValue = true;
-                    var i = 6;
-                    WLATrx wLATrx = new WLATrx();
+
                     int tahun = Convert.ToInt32(ExcelWorksheet.Cells[1, 3].Text.Trim());
                     string fungsi = ExcelWorksheet.Cells[2, 3].Text.Trim();
                     string jabatan = ExcelWorksheet.Cells[3, 3].Text.Trim();
@@ -310,15 +314,18 @@ namespace WLA.Controllers
                         wlaheader = db.WLAHeaders.Where(s => s.Tahun == tahun && s.Fungsi.Name.Equals(fungsi) && s.Jabatan.Name.Equals(jabatan)).First();
                     }
                     //Looping data dr excel
+                    string current_grup = "";
                     while (hasValue)
                     {
+                        WLATrx wLATrx = new WLATrx();
                         if (string.IsNullOrEmpty(ExcelWorksheet.Cells[i, 3].Text))
                         {
                             hasValue = false;
                             continue;
                         }
+                        
                         string activity_s = ExcelWorksheet.Cells[i, 3].Text.Trim();
-                        var activity =  db.Activities.Where(s => s.Name.Equals(activity_s)).FirstOrDefault();
+                        var activity = db.Activities.Where(s => s.Name.Equals(activity_s)).FirstOrDefault();
                         if (activity == null)
                         {
                             Activity x = new Activity();
@@ -330,7 +337,15 @@ namespace WLA.Controllers
                         wLATrx.Activity = activity;
 
                         string activityGroup_s = ExcelWorksheet.Cells[i, 2].Text.Trim();
-                        var activityGroup = db.ActivityGroups.Where(s => s.Name.Equals(activityGroup_s)).First();
+                        if (activityGroup_s.Equals(""))
+                        {
+                            activityGroup_s = current_grup;
+                        }
+                        else
+                        {
+                            current_grup = activityGroup_s;
+                        }
+                        var activityGroup = db.ActivityGroups.Where(s => s.Name.Equals(activityGroup_s)).FirstOrDefault();
                         if (activityGroup == null)
                         {
                             ActivityGroup x = new ActivityGroup();
@@ -342,10 +357,22 @@ namespace WLA.Controllers
                         wLATrx.ActivityGroup = activityGroup;
 
                         string pelaksana = ExcelWorksheet.Cells[i, 4].Text.Trim();
-                        wLATrx.Pelaksana = db.Pelaksana.Where(c => c.Name.Equals(pelaksana)).First();
+                        wLATrx.Pelaksana = db.Pelaksana.Where(c => c.Name.Equals(pelaksana)).FirstOrDefault();
+                        if (wLATrx.Pelaksana == null)
+                        {
+                            strMessage = strMessage + "row " + i + " gagal, ";
+                            i++;
+                            continue;
+                        }
 
                         string periode = ExcelWorksheet.Cells[i, 5].Text.Trim();
-                        wLATrx.Periode = db.Periode.Where(c => c.Name.Equals(periode)).First();
+                        wLATrx.Periode = db.Periode.Where(c => c.Name.Equals(periode)).FirstOrDefault();
+                        if (wLATrx == null)
+                        {
+                            strMessage = strMessage + "row " + i + " gagal, ";
+                            i++;
+                            continue;
+                        }
 
                         int Periode_Value = 0;
                         WLAModel wm = new WLAModel();
@@ -355,22 +382,42 @@ namespace WLA.Controllers
                         wLATrx.Quantity = Convert.ToInt32(ExcelWorksheet.Cells[i, 7].Text.Trim());
                         wLATrx.Frequency = Convert.ToInt32(ExcelWorksheet.Cells[i, 8].Text.Trim());
                         wLATrx.Sub_Total_Aktivitas = (double)(Periode_Value * wLATrx.Process_Time * wLATrx.Quantity * wLATrx.Frequency) / 60;
-                        db.WLATrx.Add(wLATrx);
+                        var wlaExist = db.WLATrx.Where(
+                            s => s.WLAHeader.Id == wlaheader.Id &&
+                            s.Activity.Name.Equals(activity_s) &&
+                            s.ActivityGroup.Name.Equals(activityGroup_s)
+                        ).FirstOrDefault();
+                        if (wlaExist == null)
+                        {
+                            db.WLATrx.Add(wLATrx);
+                        }
+                        else
+                        {
+                            wlaExist.Frequency = wLATrx.Frequency;
+                            wlaExist.Process_Time = wLATrx.Process_Time;
+                            wlaExist.Quantity = wLATrx.Quantity;
+                            wlaExist.Sub_Total_Aktivitas = wLATrx.Sub_Total_Aktivitas;
+                        }
+
                         db.SaveChanges();
 
-                        var standardTime = db.Standard_Time.Where(d => d.Tahun == tahun).First();
-                        var Sub_Total_Aktivitas = db.WLATrx.Where(d => d.WLAHeader.Id == wlaheader.Id).Sum(d => d.Sub_Total_Aktivitas);
-                        var dataHeader = db.WLAHeaders.Find(wlaheader.Id);
-                        dataHeader.Effective_Working_Hours = Sub_Total_Aktivitas;
-                        dataHeader.FTE = Sub_Total_Aktivitas / standardTime.Effective_Working_Hours;
-                        db.SaveChanges();
+                        var standardTime = db.Standard_Time.Where(d => d.Tahun == tahun).FirstOrDefault();
+                        if (standardTime != null)
+                        {
+                            var Sub_Total_Aktivitas = db.WLATrx.Where(d => d.WLAHeader.Id == wlaheader.Id).Sum(d => d.Sub_Total_Aktivitas);
+                            var dataHeader = db.WLAHeaders.Find(wlaheader.Id);
+                            dataHeader.Effective_Working_Hours = Sub_Total_Aktivitas;
+                            dataHeader.FTE = Sub_Total_Aktivitas / standardTime.Effective_Working_Hours;
+                            db.SaveChanges();
+                        }
+
                         i++;
                     }
 
-                    
                 }
                 catch (Exception e)
                 {
+                    strMessage = "" + i;
                     file.Close();
                     file.Dispose();
                     throw new Exception(e.Message);
@@ -383,6 +430,7 @@ namespace WLA.Controllers
             }
             catch (Exception e)
             {
+                strMessage = "" + i;
                 throw new Exception(e.Message);
             }
             return Json(new
@@ -391,5 +439,43 @@ namespace WLA.Controllers
                 message = strMessage
             }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public ActionResult UnitUpdate(FormCollection formData)
+        {
+            bool IsSuccess = false;
+            string strMessage = "";
+
+            int jumlah = Convert.ToInt32(formData["jumlah"].ToString());
+            int WLAHeaderId = Convert.ToInt32(formData["WLAHeaderId"].ToString());
+            int ActivityGroupId = Convert.ToInt32(formData["ActivityGroupId"].ToString());
+
+            var wla = db.WLATrx.Where(s => s.WLAHeader.Id == WLAHeaderId && s.Activity.Type == 1 && s.ActivityGroup.Id == ActivityGroupId).FirstOrDefault();
+
+            int Periode_Value = 0;
+            WLAModel wm = new WLAModel();
+            Periode_Value = wm.getPeriode(wla.Periode.Id);
+
+            wla.Quantity = jumlah;
+            wla.Sub_Total_Aktivitas = (double)(Periode_Value * wla.Process_Time * wla.Quantity * wla.Frequency) / 60;
+            db.SaveChanges();
+
+            var standardTime = db.Standard_Time.Where(d => d.Tahun == wla.WLAHeader.Tahun).FirstOrDefault();
+            if (standardTime != null)
+            {
+                var Sub_Total_Aktivitas = db.WLATrx.Where(d => d.WLAHeader.Id == WLAHeaderId).Sum(d => d.Sub_Total_Aktivitas);
+                var dataHeader = db.WLAHeaders.Find(WLAHeaderId);
+                dataHeader.Effective_Working_Hours = Sub_Total_Aktivitas;
+                dataHeader.FTE = Sub_Total_Aktivitas / standardTime.Effective_Working_Hours;
+                db.SaveChanges();
+            }
+
+            return Json(new
+            {
+                status = IsSuccess,
+                message = strMessage
+            }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = "Details";
+    double Effective_Working_Hours = (Model.WLAHeader.Effective_Working_Hours ?? 1);
+    Effective_Working_Hours = Math.Ceiling(Effective_Working_Hours * 1000.0)/1000;
+
+    double FTE = Math.Ceiling(Model.WLAHeader.FTE * 1000.0) / 1000;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -24,17 +28,17 @@
         </tr>
         <tr>
             <td>Effective Working Hour</td>
-            <td>@Html.DisplayFor(model => model.WLAHeader.Effective_Working_Hours)</td>
+            <td>@Effective_Working_Hours</td>
         </tr>
         <tr>
             <td>@Html.DisplayNameFor(model => model.WLAHeader.FTE)</td>
-            <td>@Html.DisplayFor(model => model.WLAHeader.FTE)</td>
+            <td>@FTE</td>
         </tr>
     </table>
 </div>
 <p>
     <div class="btn-group">
-        <a href="/../WLATrx/Create/@ViewBag.WLAHeaderId" class="btn btn-danger">Create New</a>
+        <a href="/../WLATrx/Create/@ViewBag.WLAHeaderId" class="btn btn-danger"><i class="glyphicon glyphicon-plus"></i> Create New</a>
     </div>
     <div class="btn-group">
         <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,6 +56,9 @@
             Activity Group
         </th>
         <th>
+            Quantity
+        </th>
+        <th>
             Effective Working Hours per Year
         </th>
         <th>
@@ -66,13 +73,23 @@
             <td>
                 @item.ActivityGroup
             </td>
+            <td><input type="text" name="" value="" size="5"/></td>
             <td>
-                @item.Effective_Working_Hours
+                @(Math.Ceiling(@item.Effective_Working_Hours * 1000.0) / 1000)
             </td>
             <td>
-                @item.FTE
+                @(Math.Ceiling(@item.FTE * 1000.0) / 1000)
             </td>
-            <td></td>
+            <td>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Action <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a onclick="jQuery.fn.unit_btn(@item.ActivityGroupId)" href="#">Edit Jumlah Unit</a></li>
+                    </ul>
+                </div>
+            </td>
         </tr>
     }
 
@@ -81,3 +98,36 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.WLAHeader.Id }, new { @class = "btn btn-danger" })
     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-danger" })
 </p>
+@section Scripts {
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery.fn.unit_btn = function (ActivityGroupId)
+            {
+                bootbox.prompt("Masukkan jumlah unit", function(result) {
+                    $.ajax({
+                        type: "POST",
+                        global: false,
+                        url: "@(App.BaseUrl)WLAHeaders/UnitUpdate",
+                        data: { jumlah: result, wlaHeaderId: @ViewBag.WLAHeaderId, ActivityGroupId: ActivityGroupId },
+                        beforeSend: function () {
+                            $.blockUI({ message: "<h1>Response in progress...</h1>" });
+                        },
+                        complete: function () {
+                            $.unblockUI();
+                        },
+                        success: function (data, status) {
+                            if (data.message != "") {
+                                bootbox.alert(data.message);
+                            } else {
+                                bootbox.alert("Update berhasil !");
+                            }
+                        },
+                        error: function (status, error) {
+                            bootbox.alert(error);
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+}

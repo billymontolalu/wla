@@ -1,6 +1,10 @@
 ﻿@model WLA.Models.WLAHeader
 @{
     ViewBag.Title = "Details";
+    int count = 0;
+    string printCount = "";
+    string groupName = "";
+    string printGroupName = "";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -47,6 +51,9 @@
 </p>
 <table class="table">
     <tr>
+        <td>
+            No
+        </td>
         <th>
             Activity Group
         </th>
@@ -63,6 +70,9 @@
             Process Time (minute)
         </th>
         <th>
+            Quantity
+        </th>
+        <th>
             Frequency (per day/week/year)
         </th>
         <th>
@@ -74,9 +84,26 @@
 
     @foreach (var item in ViewBag.wLATrx as List<WLA.Models.WLATrx>)
     {
+        {
+            if (!groupName.Equals(item.ActivityGroup.Name))
+            {
+                groupName = item.ActivityGroup.Name;
+                printGroupName = groupName;
+                count++;
+                printCount =Convert.ToString(count);
+            }
+            else
+            {
+                printGroupName = "";
+                printCount = "";
+            }
+        }
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ActivityGroup.Name)
+                @printCount
+            </td>
+            <td>
+                @printGroupName
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Activity.Name)
@@ -91,6 +118,9 @@
                 @Html.DisplayFor(modelItem => item.Process_Time)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Frequency)
             </td>
             <td>
@@ -98,11 +128,19 @@
             </td>
             
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Action <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="@(App.BaseUrl)WLAHeaders/Edit/@item.Id">Edit</a></li>
+                        <li><a href="@(App.BaseUrl)WLAHeaders/Details/@item.Id">Details</a></li>
+                        <li><a href="@(App.BaseUrl)WLAHeaders/Delete/@item.Id">Delete</a></li>
+                    </ul>
+                </div>
             </td>
         </tr>
+        
     }
 
 </table>
@@ -131,7 +169,6 @@
 @section Scripts {
     @Scripts.Render("~/bundles/ajaxfileupload")
     <script type="text/javascript">
-        @App.BaseUrl
         jQuery(document).ready(function () {
             function ResetUploadData() {
                 $("#lblUploadDataLink").html('');
@@ -164,11 +201,10 @@
                             $.unblockUI();
                         },
                         success: function (data, status) {
-                            if (data.status) {
-                                bootbox.alert("Upload sukses");
+                            if (data.strMessage != "") {
+                                bootbox.alert(data.message);
                             } else {
                                 bootbox.alert(data.message);
-
                             }
                         },
                         error: function (status, error) {
