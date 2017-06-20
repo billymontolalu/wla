@@ -17,16 +17,21 @@ namespace WLA.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WLAHeader()
         {
+            this.ResumeGroups = new HashSet<ResumeGroup>();
             this.WLATrxes = new HashSet<WLATrx>();
         }
     
         public int Id { get; set; }
         public Nullable<int> Tahun { get; set; }
         public double FTE { get; set; }
+        public int Fungsi_Id { get; set; }
+        public int Jabatan_Id { get; set; }
         public Nullable<double> Effective_Working_Hours { get; set; }
     
         public virtual Fungsi Fungsi { get; set; }
         public virtual Jabatan Jabatan { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ResumeGroup> ResumeGroups { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WLATrx> WLATrxes { get; set; }
     }

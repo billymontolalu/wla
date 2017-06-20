@@ -18,6 +18,7 @@ namespace WLA.Models
         public ActivityGroup()
         {
             this.ActivityGroupLists = new HashSet<ActivityGroupList>();
+            this.ResumeGroups = new HashSet<ResumeGroup>();
             this.WLATrxes = new HashSet<WLATrx>();
         }
     
@@ -27,6 +28,8 @@ namespace WLA.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ActivityGroupList> ActivityGroupLists { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ResumeGroup> ResumeGroups { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WLATrx> WLATrxes { get; set; }
     }

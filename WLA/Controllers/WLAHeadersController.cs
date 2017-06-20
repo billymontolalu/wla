@@ -19,13 +19,37 @@ namespace WLA.Controllers
         private wlaEntities db = new wlaEntities();
 
         // GET: WLAHeaders
-        public ActionResult Index(int? page)
+        public ActionResult Index(string Fungsi, string Jabatan, int? page)
         {
-            Math.Ceiling(1.4);
+            ViewBag.FungsiId = null;
+            ViewBag.JabatanId = null;
+
+            List<SelectListItem> fungsiList = db.Fungsi.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+            fungsiList.Insert(0, new SelectListItem { Text = "Semua", Value = "0" });
+            ViewBag.Fungsi = fungsiList;
+
+            List<SelectListItem> jabatanList = db.Jabatan.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+            jabatanList.Insert(0, new SelectListItem { Text = "Semua", Value = "0" });
+            ViewBag.Jabatan = jabatanList;
+
             var wlaheader = from s in db.WLAHeaders
                             select s;
             wlaheader = wlaheader.OrderBy(s => s.Jabatan.Name);
-            int pageSize = 10;
+            if (Fungsi != null && !Fungsi.Equals("0"))
+            {
+                int fungsiId = Convert.ToInt32(Fungsi);
+                ViewBag.FungsiId = fungsiId;
+                wlaheader = wlaheader.Where(s => s.Fungsi.Id == fungsiId);
+            }
+
+            if (Jabatan != null && !Jabatan.Equals("0"))
+            {
+                int jabatanId = Convert.ToInt32(Jabatan);
+                ViewBag.JabatanId = jabatanId;
+                wlaheader = wlaheader.Where(s => s.Jabatan.Id == jabatanId);
+            }
+
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(wlaheader.ToPagedList(pageNumber, pageSize));
         }

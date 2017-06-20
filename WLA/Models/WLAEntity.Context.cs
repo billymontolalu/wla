@@ -32,8 +32,9 @@ namespace WLA.Models
         public virtual DbSet<Jabatan> Jabatan { get; set; }
         public virtual DbSet<Pelaksana> Pelaksana { get; set; }
         public virtual DbSet<Periode> Periode { get; set; }
-        public virtual DbSet<WLATrx> WLATrx { get; set; }
+        public virtual DbSet<ResumeGroup> ResumeGroup { get; set; }
         public virtual DbSet<Standard_Time> Standard_Time { get; set; }
         public virtual DbSet<WLAHeader> WLAHeaders { get; set; }
+        public virtual DbSet<WLATrx> WLATrx { get; set; }
     }
 }

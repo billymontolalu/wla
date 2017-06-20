@@ -13,7 +13,7 @@ namespace WLA.Controllers
     public class FungsiController : Controller
     {
         private wlaEntities db = new wlaEntities();
-
+        
         // GET: Fungsi
         public ActionResult Index()
         {

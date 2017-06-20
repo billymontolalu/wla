@@ -172,15 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\WLAHeadersController.cs" />
-    <Compile Include="Models\Activity.cs">
-      <DependentUpon>WLAEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ActivityGroup.cs">
-      <DependentUpon>WLAEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ActivityGroupList.cs">
-      <DependentUpon>WLAEntity.tt</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -194,11 +185,20 @@
     <Compile Include="Controllers\PeriodeController.cs" />
     <Compile Include="Controllers\StandardTimeController.cs" />
     <Compile Include="Controllers\WLATrxController.cs" />
-    <Compile Include="Models\Fungsi.cs">
-      <DependentUpon>WLAEntity.tt</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Activity.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActivityGroup.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActivityGroupList.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fungsi.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Groups.cs" />
     <Compile Include="Models\Helper.cs" />
@@ -211,11 +211,9 @@
     <Compile Include="Models\Periode.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WLAHeader.cs">
+    <Compile Include="Models\ResumeGroup.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WLAModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Standard_Time.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
@@ -234,9 +232,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WLAEntity.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\WLAHeader.cs">
+      <DependentUpon>WLAEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WLAModel.cs" />
     <Compile Include="Models\WLATrx.cs">
       <DependentUpon>WLAEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -406,6 +409,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\WLAEntity.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WLAEntity.edmx</DependentUpon>
+      <LastGenOutput>WLAEntity.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\WLAEntity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WLAEntity.edmx</DependentUpon>
+      <LastGenOutput>WLAEntity.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\ajaxfileupload.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
@@ -420,16 +433,12 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
-    <Content Include="Models\WLAEntity.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
+    <EntityDeploy Include="Models\WLAEntity.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WLAEntity.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\WLAEntity.edmx.diagram">
       <DependentUpon>WLAEntity.edmx</DependentUpon>
-      <LastGenOutput>WLAEntity.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\WLAEntity.edmx.sql" />
-    <Content Include="Models\WLAEntity.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WLAEntity.edmx</DependentUpon>
-      <LastGenOutput>WLAEntity.cs</LastGenOutput>
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -583,13 +592,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <EntityDeploy Include="Models\WLAEntity.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WLAEntity.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\WLAEntity.edmx.diagram">
-      <DependentUpon>WLAEntity.edmx</DependentUpon>
-    </Content>
     <Content Include="Views\Activities\Create.cshtml" />
     <Content Include="Views\Activities\Delete.cshtml" />
     <Content Include="Views\Activities\Details.cshtml" />

@@ -21,12 +21,17 @@ namespace WLA.Models
         public double Effective_Working_Hours { get; set; }
         public double FTE { get; set; }
         public double Presentase { get; set; }
+        public int Pelaksana_Id { get; set; }
+        public int Periode_Id { get; set; }
+        public int ActivityGroup_Id { get; set; }
+        public int Activity_Id { get; set; }
+        public int WLAHeader_Id { get; set; }
         public Nullable<int> Quantity { get; set; }
     
+        public virtual Activity Activity { get; set; }
+        public virtual ActivityGroup ActivityGroup { get; set; }
         public virtual Pelaksana Pelaksana { get; set; }
         public virtual Periode Periode { get; set; }
-        public virtual ActivityGroup ActivityGroup { get; set; }
-        public virtual Activity Activity { get; set; }
         public virtual WLAHeader WLAHeader { get; set; }
     }
 }

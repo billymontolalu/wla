@@ -12,18 +12,18 @@ namespace WLA.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Pelaksana
+    public partial class ResumeGroup
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Pelaksana()
-        {
-            this.WLATrxes = new HashSet<WLATrx>();
-        }
-    
         public int Id { get; set; }
-        public string Name { get; set; }
+        public int Process_Time { get; set; }
+        public int Frequency { get; set; }
+        public int Quantity { get; set; }
+        public double Effective_Working_Hours { get; set; }
+        public double FTE { get; set; }
+        public int WLAHeader_Id { get; set; }
+        public int ActivityGroup_Id { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WLATrx> WLATrxes { get; set; }
+        public virtual ActivityGroup ActivityGroup { get; set; }
+        public virtual WLAHeader WLAHeader { get; set; }
     }
 }
