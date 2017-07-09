@@ -27,11 +27,11 @@
         </tr>
         <tr>
             <td>Effective Working Hour</td>
-            <td>@Html.DisplayFor(model => model.Effective_Working_Hours)</td>
+            <td>@(Math.Ceiling((Model.Effective_Working_Hours ?? 0) * 1000.0) / 1000)</td>
         </tr>
         <tr>
             <td>@Html.DisplayNameFor(model => model.FTE)</td>
-            <td>@Html.DisplayFor(model => model.FTE)</td>
+            <td>@(Math.Ceiling(Model.FTE * 1000.0) / 1000)</td>
         </tr>
     </table>
 </div>
@@ -124,7 +124,7 @@
                 @Html.DisplayFor(modelItem => item.Frequency)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sub_Total_Aktivitas)
+                @(Math.Ceiling(item.Sub_Total_Aktivitas * 1000.0)/1000)
             </td>
             
             <td>
